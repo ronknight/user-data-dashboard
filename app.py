@@ -13,18 +13,32 @@ from datetime import timedelta
 excel_file_path = 'data.xlsx'
 df = pd.read_excel(excel_file_path, sheet_name='Sheet1', header=None)
 
-# Parse data to extract metrics and event data (including purchases and others)
+# Create all_event_df with comprehensive event data
+all_event_data = {
+    "Event Type": ["user_engagement", "page_view", "scroll", "view_item", "view_cart", 
+                   "click", "begin_checkout", "purchase"],
+    "Count": [408, 400, 318, 86, 25, 24, 17, 15]
+}
+all_event_df = pd.DataFrame(all_event_data)
+
+# Calculate transactions and revenue based on event data in all_event_df
+purchase_count = all_event_df[all_event_df["Event Type"] == "purchase"]["Count"].sum()
+purchase_revenue = 2243.58  # Assuming this is given or could be derived from actual data
+
+# Define metrics dynamically
 metrics = {
     "First seen": "Oct 29, 2024 from Miami, United States",
-    "Event count": 1326,
-    "Purchase revenue": 2243.58,
-    "Transactions": 2,
+    "Event count": all_event_df["Count"].sum(),  # Sum of all event counts
+    "Purchase revenue": purchase_revenue,
+    "Transactions": purchase_count,
     "User engagement": "4h 08m",
-    "click": 24,
-    "begin_checkout": 17,
-    "purchase": 15
+    "click": all_event_df[all_event_df["Event Type"] == "click"]["Count"].sum(),
+    "begin_checkout": all_event_df[all_event_df["Event Type"] == "begin_checkout"]["Count"].sum(),
+    "purchase": purchase_count
 }
+
 metrics_df = pd.DataFrame(list(metrics.items()), columns=["Metric", "Value"])
+
 
 # Comprehensive event data, including additional events like 'purchase' and others
 all_event_data = {
