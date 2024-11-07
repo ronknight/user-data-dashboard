@@ -1,0 +1,4 @@
+dash==2.11.1  # or latest stable version
+pandas==2.0.3  # or latest stable version
+plotly==5.10.0  # or latest stable version
+Pillow==9.4.0  # or latest stable version
